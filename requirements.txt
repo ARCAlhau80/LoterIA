@@ -1,0 +1,27 @@
+# LoterIA - Projeto de Predição de Loteria com IA
+# Dependências principais
+
+# Machine Learning & Deep Learning
+tensorflow>=2.13.0
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# Database & Data Processing
+pyodbc>=4.0.39
+sqlalchemy>=2.0.0
+openpyxl>=3.1.0
+
+# Utilities & Progress
+tqdm>=4.65.0
+python-dateutil>=2.8.2
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Development & Testing
+pytest>=7.4.0
+jupyter>=1.0.0
+notebook>=6.5.0
+
+# Optional: GPU support (uncomment if needed)
+# tensorflow-gpu>=2.13.0
