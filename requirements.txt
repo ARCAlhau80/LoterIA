@@ -1,5 +1,5 @@
-# LoterIA - Projeto de Predição de Loteria com IA
-# Dependências principais
+# LoterIA v3.0 - Sistema Avançado de Predição de Loteria com IA
+# Dependências principais + Pattern Analysis
 
 # Machine Learning & Deep Learning
 tensorflow>=2.13.0
