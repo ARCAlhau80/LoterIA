@@ -110,7 +110,7 @@ class DatabaseManager:
 
 class DataProcessor:
     """Processador de dados para análise e preparação"""
-      def __init__(self, db_manager: DatabaseManager):
+    def __init__(self, db_manager: DatabaseManager):
         self.db_manager = db_manager
         
     def load_historical_data(self) -> pd.DataFrame:
@@ -315,7 +315,7 @@ class DataProcessor:
 
 class LoterIAModel:
     """Modelo de Deep Learning para predição de loteria"""
-      def __init__(self, config: LoterIAConfig):
+    def __init__(self, config: LoterIAConfig):
         self.config = config
         self.model = None
         
@@ -439,7 +439,7 @@ class LoterIAModel:
 
 class LoterIAPredictor:
     """Sistema principal de predição"""
-      def __init__(self):
+    def __init__(self):
         self.config = LoterIAConfig()
         self.config.ensure_directories()
         
@@ -447,7 +447,7 @@ class LoterIAPredictor:
         self.data_processor = DataProcessor(self.db_manager)
         self.model = LoterIAModel(self.config)
         self.analyzer = PredictionAnalyzer(self.db_manager)  # Nova classe de análise
-          def run_full_pipeline(self):
+    def run_full_pipeline(self):
         """Executa pipeline COMPLETO com análises avançadas"""
         print("🎯 Iniciando LoterIA - Sistema de Predição AVANÇADO")
         print("=" * 60)
