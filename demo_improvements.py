@@ -58,7 +58,7 @@ def demo_pattern_analysis():
         print("Analisa padrões específicos e prevê quando podem reaparecer")
         
         # Exemplo: números 1 e 25 nas extremidades
-        padrao_exemplo = {'numero_1': 1, 'numero_15': 25}
+        padrao_exemplo = {'N1': 1, 'N15': 25}
         print(f"Analisando padrão: {padrao_exemplo}")
         
         resultado_padrao = analyzer.analisar_padrao_posicional_recorrente(padrao_exemplo)
@@ -108,8 +108,7 @@ def demo_pattern_analysis():
         # Simular análise de filtros (adaptado para nossa estrutura)
         print("Exemplo: Análise condicional simulada")
         print("(Esta análise seria mais rica com mais features no banco)")
-        
-        # Estatísticas básicas dos dados
+          # Estatísticas básicas dos dados
         df_historico = analyzer.df_historico
         if 'concurso' in df_historico.columns:
             print(f"📊 Total de concursos analisados: {len(df_historico)}")
@@ -127,7 +126,7 @@ def demo_pattern_analysis():
         
         print(f"\n🎯 {len(df_combinacoes)} combinações geradas com base nos padrões:")
         for i, row in df_combinacoes.iterrows():
-            numeros = [row[f'numero_{j}'] for j in range(1, 16)]
+            numeros = [row[f'N{j}'] for j in range(1, 16)]
             numeros_str = ' - '.join(f'{n:02d}' for n in sorted(numeros))
             print(f"  Combinação {i+1}: {numeros_str}")
             print(f"    Método: {row['metodo']} | Gerada: {row['data_geracao']}")
