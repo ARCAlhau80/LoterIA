@@ -20,13 +20,47 @@ logger = logging.getLogger(__name__)
 class PatternAnalyzer:
     """Analisador avançado de padrões para LoterIA"""
     
-    def __init__(self, db_path: str = "data/loteria.db"):
+    def __init__(self, db_path: str = "data/loteria.db", use_sqlserver_data: bool = False, db_manager=None):
         self.db_path = db_path
+        self.use_sqlserver_data = use_sqlserver_data
+        self.db_manager = db_manager
         self.df_historico = None
         self.load_historical_data()
     
     def load_historical_data(self) -> None:
         """Carrega dados históricos do banco"""
+        try:
+            if self.use_sqlserver_data and self.db_manager:
+                # CORREÇÃO: Usar dados atualizados do SQL Server
+                logger.info("📊 Carregando dados do SQL Server para análise de padrões...")
+                conn = self.db_manager.connect()
+                
+                if self.db_manager.config.DB_TYPE.lower() == "sqlserver":
+                    query = """
+                    SELECT 
+                        Concurso as concurso,
+                        N1 as n1, N2 as n2, N3 as n3, N4 as n4, N5 as n5,
+                        N6 as n6, N7 as n7, N8 as n8, N9 as n9, N10 as n10,
+                        N11 as n11, N12 as n12, N13 as n13, N14 as n14, N15 as n15
+                    FROM Resultados_INT 
+                    ORDER BY Concurso ASC
+                    """
+                    self.df_historico = pd.read_sql_query(query, conn)
+                    logger.info(f"✅ Dados atualizados carregados: {len(self.df_historico)} concursos do SQL Server")
+                else:
+                    # Fallback para SQLite se SQL Server não disponível
+                    self._load_from_sqlite()
+            else:
+                # Método original: carregar do SQLite
+                self._load_from_sqlite()
+                
+        except Exception as e:
+            logger.error(f"❌ Erro ao carregar dados: {e}")
+            # Fallback para SQLite
+            self._load_from_sqlite()
+    
+    def _load_from_sqlite(self) -> None:
+        """Método auxiliar para carregar do SQLite"""
         try:
             conn = sqlite3.connect(self.db_path)
             query = """
@@ -43,8 +77,7 @@ class PatternAnalyzer:
     def analisar_divergencia_posicional(self, janela_size: int = 15) -> pd.DataFrame:
         """
         Análise de divergência posicional - compara frequência histórica vs janela recente
-        
-        Args:
+          Args:
             janela_size: Tamanho da janela para análise recente
             
         Returns:
@@ -55,7 +88,7 @@ class PatternAnalyzer:
         df_total = self.df_historico.copy()
         df_janela = self.df_historico.tail(janela_size)
         
-        posicoes = [f'N{i}' for i in range(1, 16)]
+        posicoes = [f'n{i}' for i in range(1, 16)]  # Corrigido para minúsculas
         resultado = []
         
         for numero in range(1, 26):
@@ -262,7 +295,7 @@ class PatternAnalyzer:
         
         def contar_frequencias(df_window):
             freq = {}
-            posicoes = [f'N{i}' for i in range(1, 16)]
+            posicoes = [f'n{i}' for i in range(1, 16)]  # Corrigido para minúsculas
             for col in posicoes:
                 if col in df_window.columns:
                     for val in df_window[col].values:
@@ -332,7 +365,7 @@ class PatternAnalyzer:
         """
         logger.info(f"🎯 Gerando {limite_combinacoes} combinações inteligentes")
         
-        posicoes = [f'N{i}' for i in range(1, 16)]
+        posicoes = [f'n{i}' for i in range(1, 16)]  # Corrigido para minúsculas
         
         # Mapear pesos por posição
         mapa_pesos = {pos: {} for pos in posicoes}
